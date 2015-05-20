@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" />
+  <title>Todo List</title>
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/css/bootstrap.min.css" />
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+
+  <div id="container">
+
+    <h1>Todo List <small>Add / Done / Edit / Remove</small></h1>
+
+    <div class="form-group">
+      <input data-add="trigger" type="email" class="form-control" placeholder="What needs to be done?">
+    </div>
+
+    <table data-todoTable="container" class="table table-hover table-striped">
+      <tbody>
+        <tr>
+          <td><input type="checkbox" name="status" data-checkbox="target" /></td>
+          <td data-change="container">any task.</td>
+          <td><a href="#delete" class="delete-action"><i class="icon-remove"></i></a></td>
+        </tr>
+        <tr class="done">
+          <td><input type="checkbox" name="status" data-checkbox="target" checked /></td>
+          <td data-change="container">any tas.</td>
+          <td><a href="#delete" class="delete-action"><i class="icon-remove"></i></a></td>
+        </tr>
+        <tr>
+          <td><input type="checkbox" name="status" data-checkbox="target" /></td>
+          <td data-change="container"><input type="email" class="form-control" /></td>
+          <td><a href="#delete" class="delete-action"><i class="icon-remove"></i></a></td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  <script type="text/javascript" src="./js/main.js"></script>
+
+  <script data-tmp="tr" type="text/x-handlebars-template">
+    <tr>
+      <td><input type="checkbox" name="status" data-checkbox="target" /></td>
+      <td data-change="container">{{data}}</td>
+      <td><a href="#delete" class="delete-action"><i class="icon-remove"></i></a></td>
+    </tr>
+  </script>
+</body>
+</html>
