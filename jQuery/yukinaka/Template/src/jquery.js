@@ -20,19 +20,20 @@
   Core.prototype = {
     trim: function(text) {
       if(text === null) {
-        text = "";
+        text = ""
       } else {
-        (text + "").replace(rtrim, "");
+        (text + "").replace(rtrim, "")
       }
       return text
     },
     addClass: function addClass(className) {
+      var className = this.trim(className);
       for (var i = 0; i < this.length; i++) {
 
         var classArray = this[i].className.split(' ');
         classArray.push(className);
 
-        this[i].className = classArray.join(' ');
+        this[i].className = classArray.join('');
       }
       return this;
     },
