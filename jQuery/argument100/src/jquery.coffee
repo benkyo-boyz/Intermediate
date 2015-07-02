@@ -30,7 +30,6 @@ Core.prototype =
       continue if classArr.indexOf(value) > -1
       if classArr[0] is "" then classArr[0] = value else classArr.push(value)
       i.className = if classArr.length is 1 then classArr[0] else classArr.join " "
-    console.log @.get(0).className
     @
 
   removeClass: (value) ->
@@ -66,6 +65,45 @@ Core.prototype =
         flag = true
         break
     flag
+
+  find: (value) ->
+    value = @trim value
+    for i in @
+      @querySelectorAll value
+    @
+
+  text: (value) ->
+    isValue = false
+    returnText = ""
+    ffFlag = if typeof @.get(0).innerText is undefined then true else false
+    console.log ffFlag
+    # valueが空（取得したい時）
+    if value is undefined
+      for i in @
+        returnText += if ffFlag then i.textContent else i.innerText
+    # valueがある（代入したい時）
+    else
+      isValue = true
+      for i in @
+        if ffFlag
+          i.textContent = value
+        else
+          i.innerText = value
+    return if isValue then @ else returnText
+
+  html: (value) ->
+    isValue = false
+    returnHtml = ""
+    # valueが空（取得したい時）
+    if value is undefined
+      for i in @
+        returnHtml += i.innerHTML
+    # valueがある（代入したい時）
+    else
+      isValue = true
+      for i in @
+        i.innerHTML = value
+    return if isValue then @ else returnHtml
 
 
 

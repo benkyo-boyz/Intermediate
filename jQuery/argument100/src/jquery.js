@@ -48,7 +48,6 @@
         }
         i.className = classArr.length === 1 ? classArr[0] : classArr.join(" ");
       }
-      console.log(this.get(0).className);
       return this;
     },
     removeClass: function(value) {
@@ -100,6 +99,65 @@
         }
       }
       return flag;
+    },
+    find: function(value) {
+      var i, k, len;
+      value = this.trim(value);
+      for (k = 0, len = this.length; k < len; k++) {
+        i = this[k];
+        this.querySelectorAll(value);
+      }
+      return this;
+    },
+    text: function(value) {
+      var ffFlag, i, isValue, k, len, len1, m, returnText;
+      isValue = false;
+      returnText = "";
+      ffFlag = typeof this.get(0).innerText === void 0 ? true : false;
+      console.log(ffFlag);
+      if (value === void 0) {
+        for (k = 0, len = this.length; k < len; k++) {
+          i = this[k];
+          returnText += ffFlag ? i.textContent : i.innerText;
+        }
+      } else {
+        isValue = true;
+        for (m = 0, len1 = this.length; m < len1; m++) {
+          i = this[m];
+          if (ffFlag) {
+            i.textContent = value;
+          } else {
+            i.innerText = value;
+          }
+        }
+      }
+      if (isValue) {
+        return this;
+      } else {
+        return returnText;
+      }
+    },
+    html: function(value) {
+      var i, isValue, k, len, len1, m, returnHtml;
+      isValue = false;
+      returnHtml = "";
+      if (value === void 0) {
+        for (k = 0, len = this.length; k < len; k++) {
+          i = this[k];
+          returnHtml += i.innerHTML;
+        }
+      } else {
+        isValue = true;
+        for (m = 0, len1 = this.length; m < len1; m++) {
+          i = this[m];
+          i.innerHTML = value;
+        }
+      }
+      if (isValue) {
+        return this;
+      } else {
+        return returnHtml;
+      }
     },
     each: function(callback) {
       var i, k, l, ref;
