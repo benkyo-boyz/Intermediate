@@ -23,6 +23,15 @@
 
   var rtrim = /^[\s\uFEFF\xA0]+|[\s\uFEFF\xA0]+$/g;
 
+  function trim(text) {
+    var rtext;
+    rtext = '';
+    if (text !== null) {
+      rtext = (text + '').replace(rtrim, '');
+    }
+    return rtext;
+  }
+
   Core.prototype = {
 
     each: function (callback) {
@@ -45,18 +54,6 @@
       return ret;
     },
 
-    //text: function(e) {
-    //  var t = "";
-    //  for ( var j = 0; j < e.length; j++ ) {
-    //    var r = e[j].childNodes;
-    //    for ( var i = 0; i < r.length; i++ )
-    //      //t += r[i].nodeType != 1 ?
-    //      //    r[i].nodeValue : jQuery.fn.text([ r[i] ]);
-    //      console.log(r);
-    //  }
-    //  return t;
-    //},
-
     trim: function trim(text) {
       var rtext;
       rtext = '';
@@ -65,7 +62,29 @@
       }
       return rtext;
     },
-    addClass: function addClass(v) {
+
+    text: function(e) {
+      //e = e || this;
+      //jquery1.0からこの分岐だとeが''の時もthisになるので置き換えが出来ない
+      e = (typeof(e) === 'string')? e : this ;
+      var t = '';
+      for ( var j = 0; j < this.length; j++ ) {
+        var r = this[j].childNodes;
+        for ( var i = 0; i < r.length; i++ )
+          if(typeof(e) !== 'string') {
+            //nodetypeはブラウザによって差異があるそうだけど今回は考えない
+            if(r[i].nodeType != 1) {
+              t += trim(r[i].nodeValue);
+            }
+          }else {
+            r[i].nodeValue = e;
+          }
+      }
+      return t;
+    },
+
+
+    addClass: function(v) {
       var cName,
           classArr,
           i;
@@ -93,7 +112,7 @@
       return this;
     },
 
-    removeClass: function removeClass(v) {
+    removeClass: function(v) {
       var cName,
           classArr,
           clearArr,
@@ -121,12 +140,23 @@
         }
         i.className = clearArr.join(' ');
       }
-
-
       return this;
-
     },
 
+    hasClass: function(v) {
+      var flg,
+          classArr;
+      v = this.trim(v);
+      flg = false;
+      for (var k = 0; k < this.length; k++) {
+        var i = this[k];
+        classArr = i.className.split(" ");
+        if (classArr.indexOf(v) > -1) {
+          flg =true;
+        }
+      }
+      return flg;
+    },
 
     splice: Array.prototype.splice
 
