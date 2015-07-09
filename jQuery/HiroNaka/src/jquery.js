@@ -25,7 +25,7 @@
       var i = 0,
           l = this.length;
       for (; i < l; i++) {
-        callback.call(this, this[i], i);
+        callback.apply(this, [this[i], i]);
       }
     },
 
@@ -42,23 +42,28 @@
     },
 
     addClass: function(name) {
-        this[0].classList.add(name);
-        return this;//thisを返すことでメソッドチェーンを可能とする
+      this.each(function(elem,i) {
+        elem.classList.add(name);
+      });
+      return this;//thisを返すことでメソッドチェーンを可能とする
     },
 
     removeClass: function(name) {
-        this[0].classList.remove(name);
-        return this;
+      this.each(function(elem,i) {
+        elem.classList.remove(name);
+      });
+      return this;
     },
 
     toggleClass: function(name) {
-      var _this = this[0];
-      var hasClass = _this.className;
-      if (hasClass.indexOf(name) === -1) {
-        _this.classList.add(name);
-      } else {
-        _this.classList.remove(name);
-      }
+      this.each(function(elem,i) {
+        var hasClass = elem.className;
+        if (hasClass.indexOf(name) === -1) {
+          elem.classList.add(name);
+        } else {
+          elem.classList.remove(name);
+        }
+      });
       return this;
     },
 
@@ -68,22 +73,40 @@
     },
 
     hide: function() {
-      this[0].style.display = 'none';
+      this.each(function(elem,i) {
+        elem.style.display = 'none';
+      });
       return this;
     },
 
     show: function() {
-      this[0].style.display = 'block';
+      this.each(function(elem,i) {
+        elem.style.display = 'block';
+      });
       return this;
     },
 
     toggle: function() {
-      var state = this[0].style.display;
-      if (!state || state === 'block') {
-        this[0].style.display = 'none';
-      } else {
-        this[0].style.display = 'block';
-      }
+      this.each(function(elem,i) {
+        var state = elem.style.display;
+        if (!state || state === 'block') {
+          elem.style.display = 'none';
+        } else {
+          elem.style.display = 'block';
+        }
+      });
+      return this;
+    },
+
+    fadeOut: function(time) {
+      console.log(time);
+      this[0].style.display = 'none';
+      return this;
+    },
+
+    fadeIn: function(time) {
+      console.log(time);
+      this[0].style.display = 'block';
       return this;
     },
 

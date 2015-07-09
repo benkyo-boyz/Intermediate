@@ -4,24 +4,29 @@
   <meta charset="UTF-8">
   <title></title>
   <style>
-  .active { color: red; }
+  .active { color: red; background: #ccc; }
+  ol { list-style: none; }
   </style>
 </head>
 <body class="hoge fuga">
 	<p><input type="text" name='noticeTarget' class="noticeTarget" size="2"> <button class="notice">notice</button></p>
-	<div class="alphabet">
-		<div class="a">a</div>
-		<div class="b">b</div>
-		<div class="c">c</div>
-		<div class="d">d</div>
-		<div class="e">e</div>
-	</div>
+	<ol class="alphabet">
+		<li class="a">a</li>
+		<li class="b">b</li>
+		<li class="c">c</li>
+		<li class="d">d</li>
+		<li class="e">e</li>
+	</ol>
 	<p>
 		<a href="javascript: void(0)" class="showBtn">show</a>　　　
 		<a href="javascript: void(0)" class="hideBtn">hide</a>　　　
 		<a href="javascript: void(0)" class="toggleBtn">toggle</a>　　　
+		<a href="javascript: void(0)" class="fadeOutBtn">fadeOut</a>　　　
+		<a href="javascript: void(0)" class="fadeInBtn">fadeIn</a>　　　
 	</p>
-	<div class="display" style="background: #aaa; padding: 10px 15px; margin-top: 10px;">show and hide content</div>
+	<div class="display1" style="background: #aaa; padding: 10px 15px; margin-top: 10px;">display content1</div>
+	<div class="display2" style="background: #aaa; padding: 10px 15px; margin-top: 10px;">display content2</div>
+	<div class="display3" style="background: #aaa; padding: 10px 15px; margin-top: 10px;">display content3</div>
 
 	<script type="text/javascript" src="./jquery.js"></script>
 </body>

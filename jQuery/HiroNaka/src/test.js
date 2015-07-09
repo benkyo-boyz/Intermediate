@@ -22,13 +22,19 @@ $('div').each(function (e, i) {
 $('body').addClass('piyo');
 $('body').removeClass('fuga');
 $('.hideBtn').click(function() {
-	$('.display').hide().addClass('disable');
+	$('div').hide().addClass('disable');
 });
 $('.showBtn').click(function() {
-	$('.display').show().removeClass('disable');
+	$('div').show().removeClass('disable');
 });
 $('.toggleBtn').click(function() {
-	$('.display').toggle().toggleClass('disable');
+	$('div').toggle().toggleClass('disable');
+});
+$('.fadeInBtn').click(function() {
+  $('.display').fadeIn(500).addClass('disable');
+});
+$('.fadeOutBtn').click(function() {
+  $('.display').fadeOut(500).removeClass('disable');
 });
 $('.notice').click(function() {
 	var val = "." + $('.noticeTarget').val();
