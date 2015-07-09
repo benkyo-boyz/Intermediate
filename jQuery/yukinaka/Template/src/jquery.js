@@ -22,18 +22,37 @@
       if(text === null) {
         text = ""
       } else {
-        (text + "").replace(rtrim, "")
+        text = (text + "").replace(rtrim, "")
       }
       return text
     },
-    addClass: function addClass(className) {
-      var className = this.trim(className);
+    addClass: function(name) {
+      var cName = this.trim(name);
+
       for (var i = 0; i < this.length; i++) {
-
         var classArray = this[i].className.split(' ');
-        classArray.push(className);
-
-        this[i].className = classArray.join('');
+        if(classArray.indexOf(cName) > -1) {
+          continue;
+        }
+        if(classArray[0] === '') {
+          classArray[0] = cName;
+        } else {
+          classArray.push(cName);
+        }
+        this[i].className = classArray.join(' ');
+      }
+      return this;
+    },
+    removeClass: function(name) {
+      var cName = this.trim(name);
+      for (var i = 0; i < this.length; i++) {
+        var classArray = this[i].className.split(' '),
+            index = classArray.indexOf(cName);
+        if(index <= -1) {
+          continue;
+        }
+        classArray.splice(index, 1);
+        this[i].className = classArray.join(' ');
       }
       return this;
     },
@@ -69,6 +88,5 @@
 
   require('./test');
 
-  $('body').addClass('hoge');
-
+  $('div').removeClass('hoge');
 })();
