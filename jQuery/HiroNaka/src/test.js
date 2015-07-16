@@ -30,11 +30,11 @@ $('.showBtn').click(function() {
 $('.toggleBtn').click(function() {
 	$('div').toggle().toggleClass('disable');
 });
-$('.fadeInBtn').click(function() {
-  $('.display').fadeIn(500).addClass('disable');
-});
 $('.fadeOutBtn').click(function() {
-  $('.display').fadeOut(500).removeClass('disable');
+  $('.display1').fadeOut(300).removeClass('disable');
+});
+$('.fadeInBtn').click(function() {
+  $('.display1').fadeIn(500).addClass('disable');
 });
 $('.notice').click(function() {
 	var val = "." + $('.noticeTarget').val();
