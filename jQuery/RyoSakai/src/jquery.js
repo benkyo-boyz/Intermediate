@@ -71,13 +71,22 @@
     },
 
     find: function (name) {
-      console.log(this.length);
+      var count = 0;
       for (var i = 0, len = this.length; i < len; i++) {
         var elem = this[i];
-        ///console.log(elem);
         var elems = elem.querySelectorAll(name);
-        console.log(elems);
+        for (var j = 0, l = elems.length; j < l; j++) {
+          this[count++] = elems[j];
+        }
       }
+
+      this.selector = name;
+      if (count > 0 && len > count) {
+        this.splice(count, len - count);
+      }
+
+      console.log(this);
+      return this;
     },
 
     css: function () {

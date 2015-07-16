@@ -26,18 +26,6 @@ $('div').each(function (e, i) {
 //console.log($('div').addClass('test1 test2 test3').removeClass('test2'));
 //console.log($('div').addClass('test2 test3').toggleClass('test1'));
 
+
 $('div').find('ul');
 
-$.each('body', function() {
-  //$(e).addClass('test');
-  //console.log('--');
-  //console.log($(this).get(0));
-  //console.log($.addClass('test'));
-
-  //$(this).addClass('test');
-});
-/*
-$.each(['a','b','c'], function() {
-  $(this).addClass('test');
-});
-*/
