@@ -99,14 +99,34 @@
     },
 
     fadeOut: function(time) {
-      console.log(time);
-      this[0].style.display = 'none';
+      var _this = this[0];
+      if(_this.style.display === 'none') return this;
+      var stepTime = Math.floor(1000 / 60);
+      var step = Math.floor((stepTime * 1000) / time) / 1000;
+      if(!_this.style.opacity) _this.style.opacity = 1;
+      var Timer = function() {
+        setTimeout(function() {
+          _this.style.opacity -= step;
+          if(_this.style.opacity > 0) {
+            Timer();
+          } else {
+            _this.style.display = "none";
+            _this.style.opacity = "";
+          }
+        }, stepTime);
+      };
+      Timer();
       return this;
     },
 
     fadeIn: function(time) {
-      console.log(time);
-      this[0].style.display = 'block';
+      //途中です
+      var _this = this[0];
+            _this.style.display = "block";
+            var num = Number(_this.style.opacity) + 0.1;
+            console.log(typeof num);
+          _this.style.opacity = num;
+          console.log('hoge');
       return this;
     },
 
