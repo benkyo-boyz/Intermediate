@@ -15,7 +15,10 @@ $(function(){
 		},
 		$fairData = {
 			fair: null,
-			area: null,
+			area: {
+				tdfkn: null,
+				area: null,
+			},
 			date: null
 		}
 		$areaOpenFunc = $.noop,
@@ -38,13 +41,21 @@ $(function(){
 			//ajax送信用データ作成処理
 			createData = function() {
 				var $data = {};
+				$data['tdfkn'] = [];
 				$data['area'] = [];
 				//県内全件チェックボックスを除いたon状態のinput in valueを配列に入れる
 				$getList.each(function() {
-					if(!$(this).hasClass('todofukenCheckbox') && $(this).hasClass('on')) {
-						$data['area'].push($(this).find('input').attr('value'));
+					if ($(this).hasClass('on')) {
+						if ($(this).hasClass('todofukenCheckbox')) {
+							$data['tdfkn'].push($(this).find('input').attr('value'));
+						} else {
+							$data['area'].push($(this).find('input').attr('value'));
+						}
 					}
 				});
+				for (var $key in $data) {
+					if(!$data[$key].length) delete $data[$key];
+				}
 				return $data;
 			},
 			//件数取得ajax処理
@@ -58,7 +69,7 @@ $(function(){
 						$success($num);
 					},
 					error: function() {
-						$target.text('---');
+						$target.text('--');
 					}
 				});
 			};
@@ -66,7 +77,7 @@ $(function(){
 		//モーダル表示時に行う処理
 		$areaOpenFunc = function() {
 			var $data = createData();
-			if ($data['area'].length) {
+			if (typeof($data['area']) !== 'undefined') {
 				var $success = function($num) {
 					$target.text($num);
 				};
@@ -75,6 +86,7 @@ $(function(){
 				$hideFlag = true;
 				$target.parents('li').hide().parent().addClass('full');
 			}
+			console.log(JSON.stringify($data));//送信データ確認用
 		};
 
 		$areaOpenFunc();
@@ -92,7 +104,7 @@ $(function(){
 			};
 			//ajax処理呼び出し
 			getHit($data, $success);
-			console.log(JSON.stringify($data));
+			console.log(JSON.stringify($data));//送信データ確認用
 		});
 	};
 
@@ -122,32 +134,41 @@ $(function(){
 			$timer,
 			//各ajax送信用データ作成処理
 			createEachData = function($targetName) {
-				var $condition,
+				var $setData,
 					$data = {};
+				if ($targetName === 'area') $data['tdfkn'] = [];
 				$data[$targetName]  = [];
 				//モーダル毎の条件定義
 				switch ($targetName) {
 					case 'fair':
-						$condition = function(item) {
-							return item.hasClass('on');
+						$setData = function(item) {
+							if (item.hasClass('on')) {
+								$data[$targetName].push(item.find('input').attr('value'));
+							}
 						};
 						break;
 					case 'area':
-						$condition = function(item) {
-							return (!item.hasClass('todofukenCheckbox') && item.hasClass('on'));
+						$setData = function(item) {
+							if (item.hasClass('on')) {
+								if (item.hasClass('todofukenCheckbox')) {
+									$data['tdfkn'].push(item.find('input').attr('value'));
+								} else {
+									$data[$targetName].push(item.find('input').attr('value'));
+								}
+							}
 						};
 						break;
 					case 'date':
-						$condition = function(item) {
-							return item.hasClass('selectedCell');
+						$setData = function(item) {
+							if (item.hasClass('selectedCell')) {
+								$data[$targetName].push(item.find('input').attr('value'));
+							}
 						};
 						break;
 				}
-				//上で定義した条件でデータ取得
+				//上で定義した処理を実行
 				$getList[$targetName].each(function() {
-					if($condition($(this))) {
-						$data[$targetName].push($(this).find('input').attr('value'));
-					}
+					$setData($(this));
 				});
 				return $data;
 			},
@@ -157,9 +178,12 @@ $(function(){
 				$fairData['area'] = createEachData('area');
 				$fairData['date'] = createEachData('date');
 			},
-			//3つのデータを結合する処理
+			//全データを結合する処理
 			createData = function() {
 				var $data = $.extend({}, $fairData['fair'], $fairData['area'], $fairData['date']);
+				for (var $key in $data) {
+					if(!$data[$key].length) delete $data[$key];
+				}
 				return $data;
 			},
 			//件数取得ajax処理
@@ -173,7 +197,7 @@ $(function(){
 						$success($num);
 					},
 					error: function() {
-						$target.text('---');
+						$target.text('--');
 					}
 				});
 			};
@@ -186,7 +210,7 @@ $(function(){
 				$target[$targetName].text($num);
 			};
 			getHit($data, $success);
-			console.log(JSON.stringify($data));
+			console.log(JSON.stringify($data));//送信データ確認用
 		};
 		$fairOpenFunc();
 
@@ -203,7 +227,7 @@ $(function(){
 			};
 			//ajax処理呼び出し
 			getHit($data, $success);
-			console.log(JSON.stringify($data));
+			console.log(JSON.stringify($data));//送信データ確認用
 		});
 
 
@@ -233,7 +257,7 @@ $(function(){
 		});
 	};
 
-//==================== 「他のエリアを選択する」クリック時のモーダル設定 ====================
+//==================== 初回表示と「他のエリアを選択する」クリック時のモーダル設定 ====================
 	var hanModalOptions = {
 		mainContainer : '.page',
 		openTrigger : '.totalAreaSelect, .jscFairAreaChange, .jscAreaChange',
@@ -251,6 +275,10 @@ $(function(){
 		onClose : function(){
 			$('.jscFairSearchTtl', $totalAreaModal).hide();
 			$('.jscAreaSearchTtl', $totalAreaModal).hide();
+			$areaRealTimeFlag = true;
+			for (var i in $fairRealTimeFlag) {
+				$fairRealTimeFlag[i] = true;
+			}
 		},
 		onSubmit : function($trigger){
 			var targetAreaData = $trigger.data('target');
@@ -359,7 +387,6 @@ $(function(){
 		'closeTrigger' : '.modalClose',
 		'submitTrigger' : '.areaSearchSubmit',
 		onOpen : function(){
-			$areaStyledCheckBoxes.rebuildStyle();
 			displayAccordion('#jsiAreaSearchWrap');
 			areaSearchHit();
 		},
@@ -463,7 +490,6 @@ $(function(){
 						var $accordionTrigger = $('.jsc-accordion-trigger');
 						$accordionTrigger.filter('.off').closest('.fairTypeSearchInner').find('.jsc-accordion-target').hide();
 						$accordionTrigger.removeClass('off');
-						$areaStyledCheckBoxes.rebuildStyle();
 						displayAccordion('#jsiFairAreaSearchWrap');
 						fairSearchHit('area');
 					},
